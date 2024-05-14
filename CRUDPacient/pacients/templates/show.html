@@ -39,8 +39,8 @@
             <label for="tipo_documento" class="form-label">Tipo de Documento</label>
             <div class="mb-3">
                 <select class="form-control form-select" id="tipo_documento" name="tipo_documento" required disabled>
-                    <option value="CC" {% if paciente.tipo_documento == 'CC' %} selected {% endif %}>Cedula de Ciudadania</option>
-                    <option value="TI" {% if paciente.tipo_documento == 'TI' %} selected {% endif %}>Tarjeta de Identidad</option>
+                    <option value="CC" {% if paciente.document_type == 'CC' %} selected {% endif %}>Cedula de Ciudadania</option>
+                    <option value="TI" {% if paciente.document_type == 'TI' %} selected {% endif %}>Tarjeta de Identidad</option>
                 </select>
             </div>
         </div>

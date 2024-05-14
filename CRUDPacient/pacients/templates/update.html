@@ -1,0 +1,149 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="d-flex justify-content-center">Actualizar Paciente</h2>
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="alert alert-success" role="alert" id="Errorcito">
+                {{ message }}
+            </div>
+        {% elif message.tags == 'error' %}
+            <div class="alert alert-danger" role="alert" id="Errorcito">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <input type="text" name="numero_identificacion" id="numero_identificacion" class="form-control" placeholder="Ingrese el número de identificación" aria-label="Número de Identificación" aria-describedby="search-button">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit" id="search-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% if paciente %}
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_documento" class="form-label">Numero Documento</label>
+                <input type="text" class="form-control" id="id_documento" name="id_documento" value="{{ paciente.id_document }}" required readonly>
+            </div>
+            <div class="mb-3">
+                <label for="tipo_documento" class="form-label">Tipo de Documento</label>
+                <div class="mb-3">
+                    <select class="form-control form-select" id="tipo_documento" name="tipo_documento" required>
+                        <option value="CC" {% if paciente.document_type == 'CC' %} selected {% endif %}>Cedula de Ciudadania</option>
+                        <option value="TI" {% if paciente.document_type == 'TI' %} selected {% endif %}>Tarjeta de Identidad</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ paciente.first_name }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" value="{{ paciente.last_name }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ paciente.birth_date }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="hora_nacimiento" class="form-label">Hora de Nacimiento</label>
+                <input type="time" class="form-control" id="hora_nacimiento" name="hora_nacimiento" value="{{ paciente.birth_time }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" name="telefono"  value="{{ paciente.phone }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ paciente.email }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" value="{{ paciente.address }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono_contacto" class="form-label">Teléfono de Contacto</label>
+                <input type="text" class="form-control" id="telefono_contacto" name="telefono_contacto" value="{{ paciente.contact_phone }}"  required>
+            </div>
+            <div class="mb-3">
+                <label for="ocupacion_id" class="form-label">Ocupación</label>
+                <select class="form-control form-select" id="ocupacion_id" name="ocupacion_id" required>
+                    {% for ocupacion in ocupaciones %}
+                        <option value="{{ ocupacion.id_occupation }}" {% if paciente.occupation_id == ocupacion.id_occupation %} selected {% endif %}>{{ ocupacion.description }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="nacionalidad_id" class="form-label">Nacionalidad</label>
+                <select class="form-control form-select" id="nacionalidad_id" name="nacionalidad_id" required>
+                    {% for nacionalidad in nacionalidades %}
+                        <option value="{{ nacionalidad.id_nationality }}"  {% if paciente.nationality_id == nacionalidad.id_nationality %} selected {% endif %} >{{ nacionalidad.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="ciudad_id" class="form-label">Ciudad</label>
+                <select class="form-control form-select" id="ciudad_id" name="ciudad_id" required>
+                    {% for ciudad in ciudades %}
+                        <option value="{{ ciudad.id_city }}" {% if paciente.city_id == ciudad.id_city %} selected {% endif %} >{{ ciudad.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="diagnostico_id" class="form-label">Diagnóstico</label>
+                <select class="form-control form-select" id="diagnostico_id" name="diagnostico_id" required>
+                    {% for diagnostico in diagnosticos %}
+                        <option value="{{ diagnostico.id_diagnosis }}" {% if paciente.diagnosis_id == diagnostico.id_diagnosis %} selected {% endif %}>{{ diagnostico.description_4 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="documento" class="form-label">Tipo de Documento</label>
+                <select class="form-control form-select" id="documento" name="documento" required>
+                    <option value="Ninguno" {% if tipo_documento == "Ninguno" %}selected {% endif %}>Ninguna</option>
+                    <option value="Oposicion" {% if tipo_documento == "Oposicion" %}selected {% endif %}>Documento Presuncion Donacion</option>
+                    <option value="Aceptacion" {% if tipo_documento == "Aceptacion" %}selected {% endif %}>Documento de Voluntad Anticipada</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="texto_adicional" class="form-label">Texto Documento (Si aplica)</label>
+                <textarea class="form-control" id="texto_adicional" name="texto_adicional" rows="4">{{text}}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="ciudad_id_documento" class="form-label">Ciudad (Si aplica)</label>
+                <select class="form-control form-select" id="ciudad_id_documento" name="ciudad_id_documento">
+                    {% for ciudad in ciudades %}
+                        <option value="{{ ciudad.id_city }}" {% if ciudad.id_city == doc_ciudad %}selected {% endif %}>{{ ciudad.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+            <div class="mb-5"></div>
+        </form>
+    {% endif %}
+
+</div>
+<script>
+    setTimeout(function () {
+        var errorMessage = document.getElementById("Errorcito");
+        if (errorMessage) {
+            errorMessage.style.display = "none";
+        }
+    }, 4000);
+</script>
+{% endblock %}
