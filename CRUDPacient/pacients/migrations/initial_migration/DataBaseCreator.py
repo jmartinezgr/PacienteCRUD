@@ -54,7 +54,7 @@ try:
         # Crear la tabla DocumentoVoluntadAnticipada
         sql_create_voluntary_table = """
         CREATE TABLE IF NOT EXISTS DocumentoVoluntadAnticipada (
-            id_documento INT AUTO_INCREMENT PRIMARY KEY,
+            id_documento VARCHAR(20) PRIMARY KEY,
             contenido VARCHAR(1000),
             ciudad_id INT,
             FOREIGN KEY (ciudad_id) REFERENCES Ciudad(id_ciudad)
@@ -65,7 +65,7 @@ try:
         # Crear la tabla DocumentoPresuncionDonacion
         sql_create_donation_table = """
         CREATE TABLE IF NOT EXISTS DocumentoPresuncionDonacion (
-            id_documento_contenido INT AUTO_INCREMENT PRIMARY KEY,
+            id_documento_contenido VARCHAR(20) PRIMARY KEY,
             contenido VARCHAR(1000),
             ciudad_id INT,
             FOREIGN KEY (ciudad_id) REFERENCES Ciudad(id_ciudad)

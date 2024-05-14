@@ -51,10 +51,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'CRUDPacient.urls'
 
+import os
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'pacients/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

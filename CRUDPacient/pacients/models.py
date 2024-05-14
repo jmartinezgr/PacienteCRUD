@@ -1,4 +1,5 @@
-from Connection import Connection
+from .Connection import Connection
+from django.db import models
 
 class Occupation:
     def __init__(self, id_occupation, code, description, father_code) -> None:
@@ -280,7 +281,7 @@ class CityDAO:
 class LivingWillDocumentDAO:
     _SELECT = "SELECT * FROM DocumentoVoluntadAnticipada"
     _SELECT_ONE = "SELECT * FROM DocumentoVoluntadAnticipada WHERE id_documento=%s"
-    _INSERT = "INSERT INTO DocumentoVoluntadAnticipada (contenido, ciudad_id) VALUES (%s, %s)"
+    _INSERT = "INSERT INTO DocumentoVoluntadAnticipada (id_documento,contenido, ciudad_id) VALUES (%s, %s,%s)"
     _UPDATE = "UPDATE DocumentoVoluntadAnticipada SET contenido=%s, ciudad_id=%s WHERE id_documento=%s"
     _DELETE = "DELETE FROM DocumentoVoluntadAnticipada WHERE id_documento=%s"
 
@@ -321,7 +322,7 @@ class LivingWillDocumentDAO:
     def insert(cls, document):
         with Connection.get_cursor() as cursor:
             try:
-                cursor.execute(cls._INSERT, (document.content, document.city_id))
+                cursor.execute(cls._INSERT, (document.id_document,document.content, document.city_id))
                 Connection.get_connection().commit()
             except Exception as e:
                 print(f"Error creating living will document: {e}")
@@ -347,7 +348,7 @@ class LivingWillDocumentDAO:
 class DonationPresumptionDocumentDAO:
     _SELECT = "SELECT * FROM DocumentoPresuncionDonacion"
     _SELECT_ONE = "SELECT * FROM DocumentoPresuncionDonacion WHERE id_documento_contenido=%s"
-    _INSERT = "INSERT INTO DocumentoPresuncionDonacion (contenido, ciudad_id) VALUES (%s, %s)"
+    _INSERT = "INSERT INTO DocumentoPresuncionDonacion (id_documento_contenido,contenido, ciudad_id) VALUES (%s, %s,%s)"
     _UPDATE = "UPDATE DocumentoPresuncionDonacion SET contenido=%s, ciudad_id=%s WHERE id_documento_contenido=%s"
     _DELETE = "DELETE FROM DocumentoPresuncionDonacion WHERE id_documento_contenido=%s"
 
@@ -388,7 +389,7 @@ class DonationPresumptionDocumentDAO:
     def insert(cls, document):
         with Connection.get_cursor() as cursor:
             try:
-                cursor.execute(cls._INSERT, (document.content, document.city_id))
+                cursor.execute(cls._INSERT, (document.id_document_content,document.content, document.city_id))
                 Connection.get_connection().commit()
             except Exception as e:
                 print(f"Error creating donation presumption document: {e}")
