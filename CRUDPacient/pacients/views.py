@@ -132,3 +132,18 @@ def show_patient(request):
             messages.error(request,"No existe un paciente con esa informacion")
 
     return render(request,'show.html')
+
+def delete_patient(request):
+
+    if request.method == "POST":
+        id_documento = request.POST.get('numero_identificacion')
+
+        if PatientDAO.select_one(id=id_documento) is not None:
+            PatientDAO.delete(id_documento)
+            LivingWillDocumentDAO.delete(id_documento)
+            DonationPresumptionDocumentDAO.delete(id_documento)
+            messages.success(request,f"Paciente con numero de cedula {id_documento} eliminado con exito") 
+        else:
+            messages.error(request,"No existe un paciente con esa informacion") 
+
+    return render(request,'delete.html')
