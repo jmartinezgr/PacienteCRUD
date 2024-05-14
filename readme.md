@@ -55,6 +55,7 @@ python manage.py runserver
 ```
 
 Este comando ejecutara una respuesta de este tipo, si tienes la misma significa que ya puedes navegar:
+
 ```bash
 Watching for file changes with StatReloader
 Performing system checks...
