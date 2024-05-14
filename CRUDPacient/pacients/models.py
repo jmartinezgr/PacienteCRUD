@@ -60,6 +60,7 @@ class Diagnosis:
 
 class OccupationDAO:
     _SELECT = "SELECT * FROM ocupacion ORDER BY id_ocupacion"
+    _SELECT_ONE = "SELECT * FROM ocupacion WHERE id_ocupacion = %s"
     _INSERT = "INSERT INTO ocupacion (codigo, descripcion, codigo_padre) VALUES (%s, %s, %s)"
     _UPDATE = "UPDATE ocupacion SET codigo=%s, descripcion=%s, codigo_padre=%s WHERE id_ocupacion=%s"
     _DELETE = "DELETE FROM ocupacion WHERE id_ocupacion=%s"
@@ -82,6 +83,21 @@ class OccupationDAO:
                 )
 
             return occupations
+        
+    @classmethod
+    def select_one(cls,id):        
+        with Connection.get_cursor() as cursor:
+            cursor.execute(cls._SELECT_ONE,(id,))
+            register = cursor.fetchone()
+
+            occupation = Occupation(
+                register[0],
+                register[1],
+                register[2],
+                register[3]
+            ) if register else None
+
+            return occupation 
                 
     @classmethod
     def insert(cls, code=None, description=None, father_code=None, occupation=None):
@@ -138,6 +154,7 @@ class OccupationDAO:
 
 class NationalityDAO:
     _SELECT = "SELECT * FROM Nacionalidad"
+    _SELECT_ONE = "SELECT * FROM Nacionalidad WHERE id_nacionalidad=%s"
     _INSERT = "INSERT INTO Nacionalidad (id_nacionalidad,nombre) VALUES (%s,%s)"
     _UPDATE = "UPDATE Nacionalidad SET nombre=%s WHERE id_nacionalidad=%s"
     _DELETE = "DELETE FROM Nacionalidad WHERE id_nacionalidad=%s"
@@ -159,6 +176,19 @@ class NationalityDAO:
                 )
 
             return nationalities
+        
+    @classmethod
+    def select_one(cls, id):
+        with Connection.get_cursor() as cursor:
+            cursor.execute(cls._SELECT_ONE, (id,))
+            register = cursor.fetchone()
+
+            nationality = Nationality(
+                register[0],
+                register[1]
+            ) if register else None
+
+            return nationality
                 
     @classmethod
     def insert(cls, nationality):
@@ -189,6 +219,7 @@ class NationalityDAO:
 
 class CityDAO:
     _SELECT = "SELECT * FROM Ciudad"
+    _SELECT_ONE = "SELECT * FROM Ciudad WHERE id_ciudad=%s"
     _INSERT = "INSERT INTO Ciudad (nombre, codigo_dane, tipo) VALUES (%s, %s, %s)"
     _UPDATE = "UPDATE Ciudad SET nombre=%s, codigo_dane=%s, tipo=%s WHERE id_ciudad=%s"
     _DELETE = "DELETE FROM Ciudad WHERE id_ciudad=%s"
@@ -212,6 +243,21 @@ class CityDAO:
                 )
 
             return cities
+        
+    @classmethod
+    def select_one(cls, id):
+        with Connection.get_cursor() as cursor:
+            cursor.execute(cls._SELECT_ONE, (id,))
+            register = cursor.fetchone()
+
+            city = City(
+                register[0],
+                register[1],
+                register[2],
+                register[3]
+            ) if register else None
+
+            return city
                 
     @classmethod
     def insert(cls, city):
@@ -233,6 +279,7 @@ class CityDAO:
 
 class LivingWillDocumentDAO:
     _SELECT = "SELECT * FROM DocumentoVoluntadAnticipada"
+    _SELECT_ONE = "SELECT * FROM DocumentoVoluntadAnticipada WHERE id_documento=%s"
     _INSERT = "INSERT INTO DocumentoVoluntadAnticipada (contenido, ciudad_id) VALUES (%s, %s)"
     _UPDATE = "UPDATE DocumentoVoluntadAnticipada SET contenido=%s, ciudad_id=%s WHERE id_documento=%s"
     _DELETE = "DELETE FROM DocumentoVoluntadAnticipada WHERE id_documento=%s"
@@ -255,6 +302,20 @@ class LivingWillDocumentDAO:
                 )
 
             return documents
+        
+    @classmethod
+    def select_one(cls, id):
+        with Connection.get_cursor() as cursor:
+            cursor.execute(cls._SELECT_ONE, (id,))
+            register = cursor.fetchone()
+
+            document = LivingWillDocument(
+                register[0],
+                register[1],
+                register[2]
+            ) if register else None
+
+            return document
                 
     @classmethod
     def insert(cls, document):
@@ -285,6 +346,7 @@ class LivingWillDocumentDAO:
 
 class DonationPresumptionDocumentDAO:
     _SELECT = "SELECT * FROM DocumentoPresuncionDonacion"
+    _SELECT_ONE = "SELECT * FROM DocumentoPresuncionDonacion WHERE id_documento_contenido=%s"
     _INSERT = "INSERT INTO DocumentoPresuncionDonacion (contenido, ciudad_id) VALUES (%s, %s)"
     _UPDATE = "UPDATE DocumentoPresuncionDonacion SET contenido=%s, ciudad_id=%s WHERE id_documento_contenido=%s"
     _DELETE = "DELETE FROM DocumentoPresuncionDonacion WHERE id_documento_contenido=%s"
@@ -307,6 +369,20 @@ class DonationPresumptionDocumentDAO:
                 )
 
             return documents
+        
+    @classmethod
+    def select_one(cls, id):
+        with Connection.get_cursor() as cursor:
+            cursor.execute(cls._SELECT_ONE, (id,))
+            register = cursor.fetchone()
+
+            document = DonationPresumptionDocument(
+                register[0],
+                register[1],
+                register[2]
+            ) if register else None
+
+            return document
                 
     @classmethod
     def insert(cls, document):
@@ -337,6 +413,7 @@ class DonationPresumptionDocumentDAO:
 
 class DiagnosisDAO:
     _SELECT = "SELECT * FROM Diagnostico"
+    _SELECT_ONE = "SELECT * FROM Diagnostico WHERE id_diagnostico=%s"
     _INSERT = "INSERT INTO Diagnostico (cod_3, desc_3, cod_4, desc_4) VALUES (%s, %s, %s, %s)"
     _UPDATE = "UPDATE Diagnostico SET cod_3=%s, desc_3=%s, cod_4=%s, desc_4=%s WHERE id_diagnostico=%s"
     _DELETE = "DELETE FROM Diagnostico WHERE id_diagnostico=%s"
@@ -352,15 +429,31 @@ class DiagnosisDAO:
             for register in registers:
                 diagnoses.append(
                     Diagnosis(
-                        register['id_diagnostico'],
-                        register['cod_3'],
-                        register['desc_3'],
-                        register['cod_4'],
-                        register['desc_4']
+                        register[0],
+                        register[1],
+                        register[2],
+                        register[3],
+                        register[4]
                     )
                 )
 
             return diagnoses
+        
+    @classmethod
+    def select_one(cls, id):
+        with Connection.get_cursor() as cursor:
+            cursor.execute(cls._SELECT_ONE, (id,))
+            register = cursor.fetchone()
+
+            diagnosis = Diagnosis(
+                register[0],
+                register[1],
+                register[2],
+                register[3],
+                register[4]
+            ) if register else None
+
+            return diagnosis
                 
     @classmethod
     def insert(cls, diagnosis):
@@ -391,6 +484,7 @@ class DiagnosisDAO:
 
 class PatientDAO:
     _SELECT = "SELECT * FROM Paciente"
+    _SELECT_ONE = "SELECT * FROM Paciente WHERE id_documento=%s"
     _INSERT = """
         INSERT INTO Paciente (id_documento, tipo_documento, nombre, apellido, fecha_nacimiento, hora_nacimiento, telefono, email, direccion, telefono_contacto, ocupacion_id, nacionalidad_id, ciudad_id, diagnostico_id)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -430,6 +524,31 @@ class PatientDAO:
                 )
 
             return patients
+        
+    @classmethod
+    def select_one(cls, id):
+        with Connection.get_cursor() as cursor:
+            cursor.execute(cls._SELECT_ONE, (id,))
+            register = cursor.fetchone()
+
+            patient = Patient(
+                register[0],
+                register[1],
+                register[2],
+                register[3],
+                register[4],
+                register[5],
+                register[6],
+                register[7],
+                register[8],
+                register[9],
+                register[10],
+                register[11],
+                register[12],
+                register[13]  
+            ) if register else None
+
+            return patient
                 
     @classmethod
     def insert(cls, patient):
@@ -469,31 +588,63 @@ class PatientDAO:
                 print(f"Error deleting patient with id {id_document}: {e}")
 
 def main():
-    # Seleccionar los registros recién insertados para obtener sus IDs
-    ocupaciones = OccupationDAO.select()
-    nacionalidades =  NationalityDAO.select()
-    ciudades = CityDAO.select()
+    # Obtener el registro con ID 1 de cada tabla y mostrar la información
+    
+    # Obtener la ocupación con ID 1
+    occupation = OccupationDAO.select_one(1)
+    if occupation:
+        print("Occupation with ID 1:")
+        print(f"ID: {occupation.id_occupation}, Code: {occupation.code}, Description: {occupation.description}, Father Code: {occupation.father_code}")
+    else:
+        print("Occupation with ID 1 not found.")
 
-    # Usar los IDs de los registros insertados para crear un paciente
-    paciente = Patient(
-        id_document = '123456789',
-        document_type = 'CC',
-        first_name = 'Juan',
-        last_name = 'Pérez',
-        birth_date = '1990-01-01',
-        birth_time = '08:00',
-        phone = '123456789',
-        email = 'juan.perez@example.com',
-        address = 'Calle Falsa 123',
-        contact_phone ='987654321',
-        occupation_id = ocupaciones[0].id_occupation,
-        nationality_id = nacionalidades[0].id_nationality,
-        city_id = ciudades[0].id_city,  # ciudades[0].id_city
-        diagnosis_id = 1  # Update with actual diagnosis id
-    )
+    # Obtener la nacionalidad con ID 1
+    nationality = NationalityDAO.select_one(1)
+    if nationality:
+        print("\nNationality with ID 1:")
+        print(f"ID: {nationality.id_nationality}, Name: {nationality.name}")
+    else:
+        print("Nationality with ID 1 not found.")
 
-    # Insertar el paciente en la base de datos
-    PatientDAO.insert(paciente)
+    # Obtener la ciudad con ID 1
+    city = CityDAO.select_one(1)
+    if city:
+        print("\nCity with ID 1:")
+        print(f"ID: {city.id_city}, Name: {city.name}, Dane Code: {city.dane_code}, Type: {city.type}")
+    else:
+        print("City with ID 1 not found.")
+
+    # Obtener el documento de voluntad anticipada con ID 1
+    living_will_document = LivingWillDocumentDAO.select_one(1)
+    if living_will_document:
+        print("\nLiving Will Document with ID 1:")
+        print(f"ID: {living_will_document.id_document}, Content: {living_will_document.content}, City ID: {living_will_document.city_id}")
+    else:
+        print("Living Will Document with ID 1 not found.")
+
+    # Obtener el documento de presunción de donación con ID 1
+    donation_presumption_document = DonationPresumptionDocumentDAO.select_one(1)
+    if donation_presumption_document:
+        print("\nDonation Presumption Document with ID 1:")
+        print(f"ID: {donation_presumption_document.id_document_content}, Content: {donation_presumption_document.content}, City ID: {donation_presumption_document.city_id}")
+    else:
+        print("Donation Presumption Document with ID 1 not found.")
+
+    # Obtener el diagnóstico con ID 1
+    diagnosis = DiagnosisDAO.select_one(1)
+    if diagnosis:
+        print("\nDiagnosis with ID 1:")
+        print(f"ID: {diagnosis.id_diagnosis}, Code 3: {diagnosis.code_3}, Description 3: {diagnosis.description_3}, Code 4: {diagnosis.code_4}, Description 4: {diagnosis.description_4}")
+    else:
+        print("Diagnosis with ID 1 not found.")
+
+    # Obtener el paciente con ID 1
+    patient = PatientDAO.select_one(123456789)
+    if patient:
+        print("\nPatient with ID 123456789:")
+        print(f"ID: {patient.id_document}, Document Type: {patient.document_type}, First Name: {patient.first_name}, Last Name: {patient.last_name}, Birth Date: {patient.birth_date}, Birth Time: {patient.birth_time}, Phone: {patient.phone}, Email: {patient.email}, Address: {patient.address}, Contact Phone: {patient.contact_phone}, Occupation ID: {patient.occupation_id}, Nationality ID: {patient.nationality_id}, City ID: {patient.city_id}, Diagnosis ID: {patient.diagnosis_id}")
+    else:
+        print("Patient with ID 1 not found.")
 
 if __name__ == "__main__":
     main()
