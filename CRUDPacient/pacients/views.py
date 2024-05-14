@@ -89,3 +89,46 @@ def create_patient(request):
         'diagnosticos': diagnosticos,
     }
     return render(request, 'create.html', context)
+
+def show_patient(request):
+    if request.method == 'POST':
+        id_documento = request.POST.get('numero_identificacion')
+        
+        patient = PatientDAO.select_one(id=id_documento)
+        occuptation = OccupationDAO.select_one(patient.city_id).description
+        nacionalidad = NationalityDAO.select_one(patient.nationality_id).name
+        ciudad = CityDAO.select_one(patient.city_id).name
+        diagnostico = DiagnosisDAO.select_one(patient.diagnosis_id).description_4
+
+        doc1 = LivingWillDocumentDAO.select_one(patient.id_document)
+        doc2 = DonationPresumptionDocumentDAO.select_one(patient.id_document)
+
+        if doc1 is not None:
+            tipo_documento = "Documento de Voluntad Anticipada"
+            text = doc1.content
+            doc_ciudad = CityDAO.select_one(doc1.city_id).name
+        elif doc2 is not None:
+            tipo_documento = "Documento Presuncion Donacion"
+            text = doc2.content
+            doc_ciudad = CityDAO.select_one(doc2.city_id).name
+        else:
+            tipo_documento = "Ninguno"
+            text = ""
+            doc_ciudad = "Ninguna"
+
+        if not patient is None:
+            context = {
+                "paciente":patient,
+                "ocupacion":occuptation,
+                "nacionalidad":nacionalidad,
+                "ciudad":ciudad,
+                "diagnostico":diagnostico,
+                "tipo_documento":tipo_documento,
+                "text":text,
+                "doc_ciudad":doc_ciudad
+            }
+            return render(request,'show.html',context)
+        else:
+            messages.error(request,"No existe un paciente con esa informacion")
+
+    return render(request,'show.html')
