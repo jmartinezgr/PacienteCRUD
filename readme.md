@@ -11,9 +11,14 @@ Antes de ejecutar la aplicación, asegúrate de tener lo siguiente:
 - Tener github instalado
 - Tener instaladas las siguientes librerías:
   - [Django](https://www.djangoproject.com/): `pip install django`
-  - [Django REST framework](https://www.django-rest-framework.org/): `pip install djangorestframework`
   - [PyMySQL](https://pypi.org/project/PyMySQL/): `pip install pymysql`
+  - [Openyxl](https://pypi.org/project/openpyxl/): `pip install openpyxl`
+  - [Pandas](https://pypi.org/project/pandas/): `pip install pandas`
 
+O puedes Ejecutar este comando para instalarlas todas
+```bash
+pip install django pymysql openpyxl pandas
+```
 ## Pasos para la configuración
 
 Sigue estos pasos para configurar y ejecutar la aplicación:
@@ -74,7 +79,7 @@ Para ser mas claros, si todo salio bien justo ahora tendras un servidor local do
 - [Observar](http://127.0.0.1:8000/mostrar/)
 - [Eliminar](http://127.0.0.1:8000/eliminar/)
 
-pacientes a tu gusto. Recuerda seguir todos los pasos o contactarnos en caso de alguna duda. Y no olvides que apretando CTRL + C puedes detener el servidor de Django en tiempo real.
+pacientes a tu gusto. Recuerda seguir todos los pasos o contactarnos en caso de alguna duda. Y no olvides que apretando CTRL + C puedes detener el servidor de Django en tiempo real. (Si tienes problemas puedes reiniciar la ejecución del servidor y volverlo a iniciar)
 
 **Nota:** Si ya tenias tu motor de bases de datos MySQL, y tienes creado otro usuario y contraseña que te gustaria usar puedes modificar el codigo en tu version local, debes dirigirte a los archivos marcados con * y modificar las variables a tu gusto.
 
