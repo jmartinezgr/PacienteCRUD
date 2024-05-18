@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load cache %}
 
 {% block content %}
 <div class="container mt-5">
@@ -105,9 +106,11 @@
             <div class="mb-3">
                 <label for="diagnostico_id" class="form-label">Diagnóstico</label>
                 <select class="form-control form-select" id="diagnostico_id" name="diagnostico_id" required>
-                    {% for diagnostico in diagnosticos %}
-                        <option value="{{ diagnostico.id_diagnosis }}" {% if paciente.diagnosis_id == diagnostico.id_diagnosis %} selected {% endif %}>{{ diagnostico.description_4 }}</option>
-                    {% endfor %}
+                    {% cache 3600 'diagnosticos_cache' %}
+                        {% for diagnostico in diagnosticos %}
+                            <option value="{{ diagnostico.id_diagnosis }}">{{ diagnostico.description_4 }}</option>
+                        {% endfor %}
+                    {% endcache %}
                 </select>
             </div>
             <div class="mb-3">

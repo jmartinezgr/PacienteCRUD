@@ -5,6 +5,17 @@ from django.utils import timezone
 from datetime import datetime
 # Create your views here.
 
+from django.core.cache import cache
+
+def obtener_diagnosticos():
+    diagnosticos = cache.get('diagnosticos')
+    if diagnosticos is None:
+        # Si los diagnósticos no están en la caché, realizar la consulta a la base de datos
+        diagnosticos = DiagnosisDAO.select()
+        # Almacenar los diagnósticos en la caché con una clave y un tiempo de expiración opcional
+        cache.set('diagnosticos', diagnosticos, timeout=3600)  # Cachear por una hora (3600 segundos)
+    return diagnosticos
+
 def create_patient(request):
     if request.method == 'POST':
         id_documento = request.POST.get('id_documento')
@@ -83,8 +94,8 @@ def create_patient(request):
     ocupaciones =  OccupationDAO.select()
     nacionalidades = NationalityDAO.select()
     ciudades = CityDAO.select()
-    diagnosticos = DiagnosisDAO.select()
-
+    diagnosticos = obtener_diagnosticos()
+    
     context = {
         'ocupaciones': ocupaciones,
         'nacionalidades': nacionalidades,
