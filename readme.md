@@ -54,7 +54,6 @@ Sabras que todas las tablas e informacion basica de la aplicacion ha sido cargad
 El siguiente paso consta en ejecutar la aplicacion de Django de la siguiente forma
 
 ```bash
-cd CRUDPacient/utils
 cd ..
 python manage.py runserver
 ```
