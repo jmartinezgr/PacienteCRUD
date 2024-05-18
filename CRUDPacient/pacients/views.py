@@ -98,6 +98,12 @@ def show_patient(request):
         id_documento = request.POST.get('numero_identificacion')
         
         patient = PatientDAO.select_one(id=id_documento)
+        
+        if patient is None:
+            messages.error(request,"No existe una persona con ese numero de identificación")
+            return render(request,'show.html')
+        
+        
         occuptation = OccupationDAO.select_one(patient.city_id).description
         nacionalidad = NationalityDAO.select_one(patient.nationality_id).name
         ciudad = CityDAO.select_one(patient.city_id).name
@@ -217,7 +223,6 @@ def update_patient(request):
                     "text":text,
                     "doc_ciudad":doc_ciudad
                 }
-
                 return render(request,'update.html',context)
             else:
                 messages.error(request,"No existe un paciente con ese numero de cedula")
@@ -283,7 +288,7 @@ def update_patient(request):
                     LivingWillDocumentDAO.insert(documento) if LivingWillDocumentDAO.select_one(id_documento) is None else LivingWillDocumentDAO.update(documento)
 
                 messages.success(request,"Paciente Actualizado Exitosamente")
-                return redirect('actualizar')           
+                return render(request,'update.html')         
             except Exception as e:
                 messages.error(request,"Ocurrio un error. No se pudo actualizar el paciente")
                 print(e)
